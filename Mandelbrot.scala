@@ -1,4 +1,6 @@
+import java.io._
 object Mandelbrot {
+  val NewLine = "%n".format()
   type N = Double
   type Color = Int
 
@@ -34,8 +36,9 @@ object Mandelbrot {
 
   }
 
-def plot(results : Seq[Result]) = {
+def formatResults(results : Seq[Result]) : String = {
    var lastY = results.head.pixelCoords._2
+   val buffer = new StringBuilder
    for (Result((x,y), _, color) <- results) {
      val character = color match {
        case 1 => '.'
@@ -46,22 +49,78 @@ def plot(results : Seq[Result]) = {
        case x if (x < 50) => '$'
        case _ => ' '
      }
-     if (y == lastY)
-       print(character)
-     else {
+     buffer.append(character)
+     if (y != lastY) {
        lastY = y
-       println(character)
+       buffer.append(NewLine)
      }
    }
+   buffer.toString
+}
+
+class IO(inputStream : InputStream) {
+
+
+   private val reader = new BufferedReader(new InputStreamReader(inputStream))
+
+   def close = reader.close
+
+   def readInt(label : String) : Int = {
+      def doRead() : Option[Int] = {
+
+              val charIn = reader.readLine
+	      try {
+		Some(charIn.toInt)
+	      } catch {
+		case e => println("Didn't understand '%s' : %s".format(charIn, e))
+                None
+	      }
+      }
+      print(label)
+      var opt = doRead()
+      while(!opt.isDefined) {
+        print(label)
+        opt = doRead()
+      }
+      opt.get
+}
+}
+
+def runNext(io : IO) : Option[String] = {
+
+
+      val x1 = io.readInt("From X: ")
+
+      if (x1 == 123) {
+         None
+      } else {
+	      val y1 = io.readInt("From Y: ")
+
+	      val x2 = io.readInt("To X: ")
+	      val y2 = io.readInt("To Y: ")
+
+	      val fromXY = (x1, y1)
+	      val toXY = (x2,y2)
+	      val depth = 1000
+	      val results = mapCoords(fromXY, toXY, depth)
+              val asString = formatResults(results)
+	      Some(asString)
+      }
+      
 }
 
     def main(args : Array[String]) = {
-      val fromXY = (0, 0)
-      val toXY = (100,100)
-      val depth = 1000
-      val results = mapCoords(fromXY, toXY, depth)
-      plot(results)
-    }
+
+     val io = new IO(System.in)
+
+     var resultOpt : Option[String] = runNext(io)
+     while(resultOpt.isDefined) {
+	println(resultOpt.get)
+	println("enter 123 for From X to quit")
+        resultOpt = runNext(io)
+     }
+	println("Done")
+         }
 
     def mapRange(min : N)(max : N)(newMin : N)(newMax : N)(value : N) = {
         val diff = max - min
