@@ -1,8 +1,18 @@
-package com.porpoise.mandelbrot
+package com.porpoise.mandelbrot.model
+
+import com.porpoise.mandelbrot.N
+import com.porpoise.mandelbrot.Result
+import com.porpoise.mandelbrot.Scale
+import com.porpoise.mandelbrot.Color
+import com.porpoise.mandelbrot.Coords
+import com.porpoise.mandelbrot.ScaledCoords
 
 object Mandelbrot {
 
-  def calculateDepth(xOffset: N, yOffset: N, depth: Int) = {
+  /**
+   * with the given x and y coords, calculate the given result for the given depth
+   */
+  def calculateDepth(xOffset: N, yOffset: N, depth: Int): Color = {
 
     var x: N = 0
     var y: N = 0
@@ -31,7 +41,7 @@ object Mandelbrot {
       coordX <- x1 to x2
       x = scaleX(coordX)
       y = scaleY(coordY)
-    } yield Result(coordX -> coordY, x -> y, Mandelbrot.calculateDepth(x, y, depth))
+    } yield Result(Coords(coordX, coordY), ScaledCoords(x, y), Mandelbrot.calculateDepth(x, y, depth))
 
   }
 

@@ -1,5 +1,6 @@
 package com.porpoise.mandelbrot
 import scala.Option.option2Iterable
+import com.porpoise.mandelbrot.model.Mandelbrot
 
 object Main {
 
@@ -8,8 +9,8 @@ object Main {
       x1 <- io.readInt("From X: ", 0)
       y1 <- io.readInt("From Y: ", 0)
       fromXY = (x1, y1)
-      x2 <- io.readInt("To X: ", 10)
-      y2 <- io.readInt("To Y: ", 10)
+      x2 <- io.readInt("To X: ", 200)
+      y2 <- io.readInt("To Y: ", 100)
       toXY = (x2, y2)
       scaleX1 <- io.readDouble("Scale X1 (between -2.5 and 1) : ", -2.5)
       scaleX2 <- io.readDouble("Scale X2 (between %s and 1) : ".format(scaleX1), 1)

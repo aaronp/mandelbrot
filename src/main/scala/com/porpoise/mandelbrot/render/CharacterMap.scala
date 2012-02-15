@@ -15,9 +15,9 @@ object CharacterMap {
   }
 
   def formatResults(results: Seq[Result]): String = {
-    var lastY = results.head.pixelCoords._2
+    var lastY = results.head.pixelCoords.x
     val buffer = new StringBuilder
-    for (Result((x, y), _, color) <- results) {
+    for (Result(Coords(x, y), _, color) <- results) {
       val character = charForDepth(color)
       buffer.append(character)
       if (y != lastY) {
