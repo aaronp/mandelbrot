@@ -1,4 +1,5 @@
-package com.porpoise.mandelbrot
+package com.porpoise.mandelbrot.model
+import com.porpoise.mandelbrot.N
 
 object Scale {
 

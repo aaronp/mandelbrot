@@ -1,12 +1,26 @@
-package com.porpoise.mandelbrot
+package com.porpoise.mandelbrot.model
 
-sealed trait MandelbrotRequest
-sealed trait MandelbrotResponse
+import com.porpoise.mandelbrot._
 
-case class ScaledCoords(x: N, y: N)
+/**
+ * COORDS
+ */
 case class Coords(x: Int, y: Int)
 
-case class ScaledView(topLeft: ScaledCoords, bottomRight: ScaledCoords) {
+/**
+ * SCALED COORDS
+ */
+case class ScaledCoords(x: N, y: N)
+object ScaledCoords {
+  val TopLeft = ScaledCoords(-2.5, -1)
+  val BottomRight = ScaledCoords(1, 1)
+}
+import ScaledCoords._
+
+/**
+ * SCALED VIEW
+ */
+case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords = BottomRight) {
   require(topLeft.x <= bottomRight.x)
   require(topLeft.y <= bottomRight.y)
   lazy val x1 = topLeft.x
@@ -14,16 +28,17 @@ case class ScaledView(topLeft: ScaledCoords, bottomRight: ScaledCoords) {
   lazy val x2 = bottomRight.x
   lazy val y2 = bottomRight.y
 }
+object ScaledView {
+  val DefaultView = ScaledView()
+}
+import ScaledView._
 
+/**
+ * SIZE
+ */
 case class Size(width: Int, height: Int)
+object Size {
+  val DefaultSize = Size(100, 100)
+}
+import Size._
 
-/**
- * Set the view to the given
- */
-case class SetAbsoluteViewRequest(scaledView: ScaledView, size: Size, depth: Int = 1000) extends MandelbrotRequest
-case class SetAbsoluteViewResponse(request: SetAbsoluteViewRequest, results: Seq[Result]) extends MandelbrotResponse
-
-/**
- * Representation of a single coordinate
- */
-case class Result(pixelCoords: Coords, scaledCoords: ScaledCoords, result: Color)

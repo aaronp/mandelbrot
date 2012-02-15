@@ -5,5 +5,4 @@ package object mandelbrot {
   type N = Double
   type Color = Int
 
-  import Scale._
 }

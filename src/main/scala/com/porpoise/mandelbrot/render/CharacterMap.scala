@@ -1,4 +1,6 @@
 package com.porpoise.mandelbrot
+import com.porpoise.mandelbrot.model.Result
+import com.porpoise.mandelbrot.model.Coords
 
 object CharacterMap {
 

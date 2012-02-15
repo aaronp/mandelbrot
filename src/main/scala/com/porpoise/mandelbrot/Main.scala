@@ -1,10 +1,12 @@
 package com.porpoise.mandelbrot
 import java.io.InputStream
-
 import scala.Option.option2Iterable
-
 import com.porpoise.mandelbrot.controller.ControllerActor
 import com.porpoise.mandelbrot.model.Mandelbrot
+import com.porpoise.mandelbrot.model.Coords
+import com.porpoise.mandelbrot.model.MandelbrotRequest
+import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
+import com.porpoise.mandelbrot.model.ScaledCoords
 
 object Main {
 
@@ -32,7 +34,13 @@ object Main {
   }
 
   def readInput(io: IO): Option[MandelbrotRequest] = {
-    None
+    val next = for {
+      x1 <- io.readInt("Next: ", 0)
+    } yield x1
+    next match {
+      case Some(_) => Some(SetAbsoluteViewRequest())
+      case None => None
+    }
   }
 
   def readLoop(io: IO)(f: MandelbrotRequest => Unit) = {
@@ -46,11 +54,8 @@ object Main {
   }
 
   def main(args: Array[String]) = {
-
-    val io = new IO(System.in)
-
-    val controller = new ControllerActor()
-    controller.start
+    val config = Config(System.in)
+    import config._
 
     readLoop(io) { msg =>
       controller ! msg

@@ -1,11 +1,7 @@
 package com.porpoise.mandelbrot.model
 
 import com.porpoise.mandelbrot.N
-import com.porpoise.mandelbrot.Result
-import com.porpoise.mandelbrot.Scale
 import com.porpoise.mandelbrot.Color
-import com.porpoise.mandelbrot.Coords
-import com.porpoise.mandelbrot.ScaledCoords
 
 object Mandelbrot {
 
