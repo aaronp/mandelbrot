@@ -12,8 +12,9 @@ object Mandelbrot {
   /**
    * with the given x and y coords, calculate the given result for the given depth
    */
-  def calculateDepth(xOffset: N, yOffset: N, depth: Int): Color = {
+  def calculateDepth(coords: ScaledCoords, depth: Int): Color = {
 
+    val ScaledCoords(xOffset: N, yOffset) = coords
     var x: N = 0
     var y: N = 0
 
@@ -28,12 +29,12 @@ object Mandelbrot {
     iter
   }
 
-  def mapCoords(fromXY: (Int, Int), toXY: (Int, Int), rangeX: (N, N), rangeY: (N, N), depth: Int): Seq[Result] = {
+  def mapCoords(fromXY: Coords, toXY: Coords, rangeX: ScaledCoords, rangeY: ScaledCoords, depth: Int): Seq[Result] = {
 
-    val (x1, y1) = fromXY
-    val (x2, y2) = toXY
-    val (xMin, xMax) = rangeX
-    val (yMin, yMax) = rangeY
+    val Coords(x1, y1) = fromXY
+    val Coords(x2, y2) = toXY
+    val ScaledCoords(xMin, xMax) = rangeX
+    val ScaledCoords(yMin, yMax) = rangeY
     val scaleX = Scale.mapRange(x1)(x2)(xMin)(xMax)_
     val scaleY = Scale.mapRange(y1)(y2)(yMin)(yMax)_
     for {
@@ -41,7 +42,10 @@ object Mandelbrot {
       coordX <- x1 to x2
       x = scaleX(coordX)
       y = scaleY(coordY)
-    } yield Result(Coords(coordX, coordY), ScaledCoords(x, y), Mandelbrot.calculateDepth(x, y, depth))
+    } yield {
+      val scaled = ScaledCoords(x, y)
+      Result(Coords(coordX, coordY), scaled, calculateDepth(scaled, depth))
+    }
 
   }
 
