@@ -65,9 +65,8 @@ class IO(inputStream : InputStream) {
 
    def close = reader.close
 
-   def readInt(label : String) : Int = {
-      def doRead() : Option[Int] = {
-
+   def readInt(label : String) : Option[Int] = {
+      print(label)
               val charIn = reader.readLine
 	      try {
 		Some(charIn.toInt)
@@ -75,38 +74,22 @@ class IO(inputStream : InputStream) {
 		case e => println("Didn't understand '%s' : %s".format(charIn, e))
                 None
 	      }
-      }
-      print(label)
-      var opt = doRead()
-      while(!opt.isDefined) {
-        print(label)
-        opt = doRead()
-      }
-      opt.get
 }
 }
 
 def runNext(io : IO) : Option[String] = {
-
-
-      val x1 = io.readInt("From X: ")
-
-      if (x1 == 123) {
-         None
-      } else {
-	      val y1 = io.readInt("From Y: ")
-
-	      val x2 = io.readInt("To X: ")
-	      val y2 = io.readInt("To Y: ")
-
+      val results = for{
+          x1 <- io.readInt("From X: ")
+	  y1 <- io.readInt("From Y: ")
+	  x2 <- io.readInt("To X: ")
+	  y2 <- io.readInt("To Y: ")} yield {
 	      val fromXY = (x1, y1)
 	      val toXY = (x2,y2)
 	      val depth = 1000
 	      val results = mapCoords(fromXY, toXY, depth)
-              val asString = formatResults(results)
-	      Some(asString)
-      }
-      
+              formatResults(results)
+          }
+     results.headOption
 }
 
     def main(args : Array[String]) = {
@@ -116,7 +99,7 @@ def runNext(io : IO) : Option[String] = {
      var resultOpt : Option[String] = runNext(io)
      while(resultOpt.isDefined) {
 	println(resultOpt.get)
-	println("enter 123 for From X to quit")
+	println("enter 'quit' (or 'exit', or anything that's not a number) to quit")
         resultOpt = runNext(io)
      }
 	println("Done")
