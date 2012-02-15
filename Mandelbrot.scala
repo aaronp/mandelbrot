@@ -22,12 +22,14 @@ object Mandelbrot {
      iter
   }
 
-  def mapCoords(fromXY : (Int, Int), toXY : (Int, Int), depth : Int) : Seq[Result] = {
+  def mapCoords(fromXY : (Int, Int), toXY : (Int, Int), rangeX : (N, N), rangeY : (N, N), depth : Int) : Seq[Result] = {
 
     val (x1,y1) = fromXY
     val (x2,y2) = toXY
-    val scaleX = mapRange(x1)(x2)(-2.5)(1)_
-    val scaleY = mapRange(y1)(y2)(-1)(1)_
+    val (xMin, xMax) = rangeX
+    val (yMin, yMax) = rangeY
+    val scaleX = mapRange(x1)(x2)(xMin)(xMax)_
+    val scaleY = mapRange(y1)(y2)(yMin)(yMax)_
     for {coordY <- y1 to y2
     	coordX <- x1 to x2
          x = scaleX(coordX)
@@ -65,28 +67,50 @@ class IO(inputStream : InputStream) {
 
    def close = reader.close
 
-   def readInt(label : String) : Option[Int] = {
-      print(label)
+   def readInt(label : String, defaultValue : Int) : Option[Int] = {
+      print("%s (default %s)".format(label, defaultValue))
+      read(defaultValue){ _.toInt }
+   }
+   def readDouble(label : String, defaultValue : Double) : Option[Double] = {
+      print("%s (default %s)".format(label, defaultValue))
+      read(defaultValue){ _.toDouble }
+   }
+
+   private def read[T]( defaultValue : T)(f : String=> T) : Option[T] = {
               val charIn = reader.readLine
 	      try {
-		Some(charIn.toInt)
+		Some(f(charIn))
 	      } catch {
-		case e => println("Didn't understand '%s' : %s".format(charIn, e))
-                None
+		case e => 
+                   if(charIn.isEmpty) {
+                      Some(defaultValue)
+                   } else {
+                      println("Didn't understand '%s'".format(charIn))
+                      None
+                   }
+
 	      }
-}
+   }
 }
 
 def runNext(io : IO) : Option[String] = {
       val results = for{
-          x1 <- io.readInt("From X: ")
-	  y1 <- io.readInt("From Y: ")
-	  x2 <- io.readInt("To X: ")
-	  y2 <- io.readInt("To Y: ")} yield {
-	      val fromXY = (x1, y1)
-	      val toXY = (x2,y2)
+          x1 <- io.readInt("From X: ", 0)
+	  y1 <- io.readInt("From Y: ", 0)
+          fromXY = (x1, y1)
+	  x2 <- io.readInt("To X: ", 10)
+	  y2 <- io.readInt("To Y: ", 10)
+          toXY = (x2,y2)
+	  scaleX1 <- io.readDouble("Scale X1 (between -2.5 and 1) : ", -2.5)
+	  scaleX2 <- io.readDouble("Scale X2 (between %s and 1) : ".format(scaleX1), 1)
+          scaleX = (scaleX1, scaleX2)
+	  scaleY1 <- io.readDouble("Scale Y1 (between -1 and 1) : ", -1)
+	  scaleY2 <- io.readDouble("Scale Y2 (between %s and 1) : ".format(scaleY1), 1)
+          scaleY = (scaleY1, scaleY2)
+
+} yield {
 	      val depth = 1000
-	      val results = mapCoords(fromXY, toXY, depth)
+	      val results = mapCoords(fromXY, toXY, scaleX, scaleY, depth)
               formatResults(results)
           }
      results.headOption
