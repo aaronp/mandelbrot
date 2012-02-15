@@ -6,7 +6,7 @@ import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.SetAbsoluteViewResponse
 
 trait ControllerTrait {
-  def handle: PartialFunction[Any, Unit] = ControllerActions.actions
+  def controllerHandlers: PartialFunction[Any, Unit] = ControllerActions.actions
 }
 
 object ControllerActions {

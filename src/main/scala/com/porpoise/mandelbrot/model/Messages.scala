@@ -7,6 +7,8 @@ import Size._
 sealed trait MandelbrotRequest
 sealed trait MandelbrotResponse
 
+case class Stop() extends MandelbrotRequest
+
 case class SetAbsoluteViewRequest(
   scaledView: ScaledView = DefaultView,
   size: Size = DefaultSize,

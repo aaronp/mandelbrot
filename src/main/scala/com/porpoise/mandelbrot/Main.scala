@@ -7,6 +7,7 @@ import com.porpoise.mandelbrot.model.Coords
 import com.porpoise.mandelbrot.model.MandelbrotRequest
 import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.ScaledCoords
+import com.porpoise.mandelbrot.model.Stop
 
 object Main {
 
@@ -60,6 +61,7 @@ object Main {
     readLoop(io) { msg =>
       controller ! msg
     }
+    controller ! Stop()
 
     println("Done")
   }
