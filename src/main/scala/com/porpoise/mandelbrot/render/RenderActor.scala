@@ -13,7 +13,8 @@ class RenderActor extends Actor with StoppableActor {
 
   def handleRequests: PartialFunction[Any, Unit] = {
     case RenderRequest(results) =>
-      CharacterMap.formatResults(results)
+      val string = CharacterMap.formatResults(results)
+      println(string)
 
   }
 }

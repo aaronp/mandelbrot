@@ -60,9 +60,11 @@ object Main {
     import config._
 
     readLoop(io) { msg =>
+      println("main sending controller " + msg)
       controller ! msg
     }
-    controller ! Stop()
+
+    config.stop
 
     println("Done")
   }

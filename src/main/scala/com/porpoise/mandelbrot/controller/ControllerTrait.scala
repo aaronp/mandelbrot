@@ -16,6 +16,7 @@ trait ControllerTrait {
 
   def controllerHandlers: PartialFunction[Any, Unit] = {
     case SetAbsoluteViewRequest(view, size, depth) =>
+      println("controller handling " + view)
       val results: Seq[Result] = Mandelbrot.mapCoords(size, view, depth)
       rendererActor ! RenderRequest(results)
   }
