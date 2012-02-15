@@ -1,4 +1,7 @@
-package com.porpoise.mandelbrot
+package com.porpoise.mandelbrot.render
+
+import com.porpoise.mandelbrot._
+
 import com.porpoise.mandelbrot.model.Result
 import com.porpoise.mandelbrot.model.Coords
 

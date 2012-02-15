@@ -4,7 +4,7 @@ import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.Stop
 import com.porpoise.mandelbrot.actors.StoppableActor
 
-class ControllerActor extends Actor
+class ControllerActor(val rendererActor: Actor) extends Actor
   with ControllerTrait with StoppableActor {
 
   def act() = {

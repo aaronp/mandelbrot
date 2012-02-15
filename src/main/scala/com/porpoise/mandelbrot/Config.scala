@@ -1,10 +1,13 @@
 package com.porpoise.mandelbrot
 import java.io.InputStream
-
 import com.porpoise.mandelbrot.controller.ControllerActor
+import com.porpoise.mandelbrot.render.RenderActor
 
 class Config(val io: IO) {
-  val controller = new ControllerActor()
+  val renderer = new RenderActor()
+  renderer.start
+  val controller = new ControllerActor(renderer)
+
   controller.start
 }
 

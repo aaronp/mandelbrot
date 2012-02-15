@@ -13,7 +13,8 @@ case class SetAbsoluteViewRequest(
   scaledView: ScaledView = DefaultView,
   size: Size = DefaultSize,
   depth: Int = 1000) extends MandelbrotRequest
-case class SetAbsoluteViewResponse(request: SetAbsoluteViewRequest, results: Seq[Result]) extends MandelbrotResponse
+
+case class RenderRequest(results: Seq[Result]) extends MandelbrotRequest
 
 /**
  * Representation of a single coordinate

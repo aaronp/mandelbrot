@@ -28,10 +28,11 @@ object Main {
 
     } yield {
       val depth = 1000
-      val results = Mandelbrot.mapCoords(fromXY, toXY, scaleX, scaleY, depth)
-      CharacterMap.formatResults(results)
+      //val results = Mandelbrot.mapCoords(fromXY, toXY, scaleX, scaleY, depth)
+      //CharacterMap.formatResults(results)
     }
-    results.headOption
+    //results.headOption
+    None
   }
 
   def readInput(io: IO): Option[MandelbrotRequest] = {

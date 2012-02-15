@@ -25,12 +25,11 @@ object Mandelbrot {
     iter
   }
 
-  def mapCoords(fromXY: Coords, toXY: Coords, rangeX: ScaledCoords, rangeY: ScaledCoords, depth: Int): Seq[Result] = {
-
-    val Coords(x1, y1) = fromXY
-    val Coords(x2, y2) = toXY
-    val ScaledCoords(xMin, xMax) = rangeX
-    val ScaledCoords(yMin, yMax) = rangeY
+  def mapCoords(size: Size, view: ScaledView, depth: Int): Seq[Result] = {
+    val (x1, y1) = (0, 0)
+    val (x2, y2) = (size.width, size.height)
+    val ScaledCoords(xMin, xMax) = view.topLeft
+    val ScaledCoords(yMin, yMax) = view.bottomRight
     val scaleX = Scale.mapRange(x1)(x2)(xMin)(xMax)_
     val scaleY = Scale.mapRange(y1)(y2)(yMin)(yMax)_
     for {

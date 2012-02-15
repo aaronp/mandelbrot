@@ -1,12 +1,19 @@
 package com.porpoise.mandelbrot.render
 import scala.actors.Actor
+import com.porpoise.mandelbrot.actors.StoppableActor
+import com.porpoise.mandelbrot.model.RenderRequest
 
-class RenderActor extends Actor {
+class RenderActor extends Actor with StoppableActor {
 
   def act() = {
-    react {
-      case _ =>
-        act()
+    loopWhile(running) {
+      react(handleRequests orElse stopHandler)
     }
+  }
+
+  def handleRequests: PartialFunction[Any, Unit] = {
+    case RenderRequest(results) =>
+      CharacterMap.formatResults(results)
+
   }
 }
