@@ -15,15 +15,29 @@ object InputReader {
       case (91, 66) => Some(InputCommand.Down)
       case (91, 67) => Some(InputCommand.Right)
       case (91, 68) => Some(InputCommand.Left)
-      case _ => None
+      case other => {
+        println("read unknown dir '%s'".format(chars))
+        None
+      }
     }
 
-    in.read() match {
-      case 27 if (in.available() == 2) => toDir(in.read() -> in.read())
+    val charRead = in.read()
+    val commandOpt = charRead match {
+      //if (in.available() == 2)
+      case 27 => toDir(in.read() -> in.read())
       case 32 => Some(InputCommand.Space)
-      case 32 => Some(InputCommand.Plus)
-      case 32 => Some(InputCommand.Minus)
-      case _ => None
+      case 43 => Some(InputCommand.Plus)
+      case 95 => Some(InputCommand.Minus)
+      case 91 => {
+        println("NINETY ONE")
+        toDir(91 -> in.read())
+      }
+      case other => {
+        println("read unknown '%s' with '%s' available".format(other, in.available()))
+        None
+      }
     }
+    println("%s => %s".format(charRead, commandOpt))
+    commandOpt
   }
 }

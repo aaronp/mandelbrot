@@ -15,22 +15,26 @@ object Main {
   import InputCommand._
 
   def readLoop(input: InputStream)(onMessage: MandelbrotRequest => Boolean) = {
-    val commandOpt = InputReader.readInput(input)
 
-    val adjustment = 0.1
-    val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
-      case Up => AdjustViewRequest.up(adjustment)
-      case Down => AdjustViewRequest.down(adjustment)
-      case Left => AdjustViewRequest.left(adjustment)
-      case Right => AdjustViewRequest.right(adjustment)
-      case Space => println("space"); Stop()
-      case Plus => AdjustViewRequest.zoom(1.1)
-      case Minus => AdjustViewRequest.zoom(0.9)
-    })
+    var reading = true
+    while (reading) {
+      val commandOpt = InputReader.readInput(input)
 
-    msgOpt match {
-      case Some(msg) => onMessage(msg); true
-      case None => false
+      val adjustment = 0.4
+      val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
+        case Up => AdjustViewRequest.up(adjustment)
+        case Down => AdjustViewRequest.down(adjustment)
+        case Left => AdjustViewRequest.left(adjustment)
+        case Right => AdjustViewRequest.right(adjustment)
+        case Space => println("space"); Stop()
+        case Plus => AdjustViewRequest.zoom(0.9)
+        case Minus => AdjustViewRequest.zoom(1.1)
+      })
+
+      reading = msgOpt match {
+        case Some(msg) => onMessage(msg)
+        case None => false
+      }
     }
   }
 
@@ -43,7 +47,7 @@ object Main {
       readLoop(in) { msg =>
         println("main sending controller " + msg)
         controller ! msg
-        true
+        msg != Stop()
       }
     }
 
