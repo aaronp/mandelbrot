@@ -20,7 +20,7 @@ object Main {
     while (reading) {
       val commandOpt = InputReader.readInput(input)
 
-      val adjustment = 0.4
+      val adjustment = 0.49
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
         case Up => AdjustViewRequest.up(adjustment)
         case Down => AdjustViewRequest.down(adjustment)
