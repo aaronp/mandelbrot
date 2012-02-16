@@ -10,14 +10,10 @@ trait MandelbrotTrait {
   def resultActor: Actor
 
   def handlerMandelbrotRequest: PartialFunction[Any, Unit] = {
-    case ComputeMandelbrotRequest(view, size, depth) =>
+    case r @ ComputeMandelbrotRequest(view, size, depth) =>
       println("mandelbrot computing for " + view)
       val results: Seq[Result] = Mandelbrot.mapCoords(size, view, depth)
-      resultActor ! MandelbrotResult(results)
-    case SetAbsoluteViewRequest(view, size, depth) =>
-      println("mandelbrot computing for set view " + view)
-      val results: Seq[Result] = Mandelbrot.mapCoords(size, view, depth)
-      resultActor ! MandelbrotResult(results)
+      resultActor ! MandelbrotResult(r, results)
   }
 }
 /** keep access private so it can only be interacted with via messages */

@@ -2,15 +2,13 @@ package com.porpoise.mandelbrot.render
 import scala.actors.Actor
 import com.porpoise.mandelbrot.actors.StoppableActor
 import com.porpoise.mandelbrot.model.MandelbrotResult
+import com.porpoise.mandelbrot.model.RenderRequest
 
 trait RenderTrait {
 
   def handleRequests: PartialFunction[Any, Unit] = {
-    case MandelbrotResult(results) =>
-      println("rendering ")
-      val string = CharacterMap.formatResults(results)
-      println(string)
-
+    case MandelbrotResult(_, results) => Actor.self ! RenderRequest(CharacterMap.formatResults(results))
+    case RenderRequest(text) => println(text)
   }
 }
 

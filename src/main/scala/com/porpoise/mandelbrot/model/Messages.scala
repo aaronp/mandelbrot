@@ -24,7 +24,9 @@ case class SetAbsoluteViewRequest(
   size: Size = DefaultSize,
   depth: Int = 1000) extends MandelbrotRequest with ComputeMandelbrotRequest
 
-case class MandelbrotResult(results: Seq[Result]) extends MandelbrotResponse
+case class MandelbrotResult(request : ComputeMandelbrotRequest, results: Seq[Result]) extends MandelbrotResponse
+
+case class RenderRequest(text : String) extends MandelbrotRequest
 
 /**
  * Representation of a single coordinate
