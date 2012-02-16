@@ -11,9 +11,9 @@ trait Config {
 
   val renderer = RenderActor()
 
-  val mandelbrot = MandelbrotActor(renderer)
+  val mandelbrot = MandelbrotActor()
 
-  val controller = ControllerActor(mandelbrot)
+  val controller = ControllerActor(mandelbrot, renderer)
 
   private def stop = controller ! Stop()
 }

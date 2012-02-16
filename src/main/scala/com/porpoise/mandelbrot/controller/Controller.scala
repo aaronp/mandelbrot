@@ -7,19 +7,22 @@ import com.porpoise.mandelbrot.model.Mandelbrot
 import com.porpoise.mandelbrot.model.MandelbrotResult
 import com.porpoise.mandelbrot.model.Result
 
-trait ControllerTrait {
+trait ControllerTrait { 
 
   def mandelbrotActor: Actor
+  def renderActor: Actor
 
   def controllerHandlers: PartialFunction[Any, Unit] = {
-    case r @ SetAbsoluteViewRequest(view, size, depth) =>
-      println("controller forwarding " + r)
-      mandelbrotActor.forward(r)
+    // TODO - maintain a map between requests and the time sent
+    case r @ SetAbsoluteViewRequest(view, size, depth) => mandelbrotActor ! r
+
+    // TODO - decorate the result with controls and timings, sending a RenderRequest instead
+    case r @ MandelbrotResult(req, result) => renderActor.forward(r)
   }
 
 }
 /** keep access private so it can only be interacted with via messages */
-private class ControllerActor(val mandelbrotActor: Actor) extends Actor
+private class ControllerActor(val mandelbrotActor: Actor, val renderActor: Actor) extends Actor
   with ControllerTrait with StoppableActor {
 
   def act() = {
@@ -27,11 +30,14 @@ private class ControllerActor(val mandelbrotActor: Actor) extends Actor
       react(controllerHandlers orElse stopHandler)
     }
   }
-  override def onStop() = mandelbrotActor ! Stop()
+  override def onStop() = {
+     mandelbrotActor ! Stop()
+     renderActor ! Stop()
+  }
 }
 object ControllerActor {
-  def apply(mandelbrotActor: Actor): Actor = {
-    val actor = new ControllerActor(mandelbrotActor)
+  def apply(mandelbrotActor: Actor, renderActor : Actor): Actor = {
+    val actor = new ControllerActor(mandelbrotActor, renderActor)
     actor.start
     actor
   }
