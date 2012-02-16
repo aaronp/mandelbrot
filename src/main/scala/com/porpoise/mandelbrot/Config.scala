@@ -1,22 +1,33 @@
 package com.porpoise.mandelbrot
 import java.io.InputStream
+
 import com.porpoise.mandelbrot.controller.ControllerActor
-import com.porpoise.mandelbrot.render.RenderActor
+import com.porpoise.mandelbrot.model.MandelbrotActor
 import com.porpoise.mandelbrot.model.Stop
+import com.porpoise.mandelbrot.render.RenderActor
 
-class Config(val io: IO) {
-  val renderer = new RenderActor()
-  renderer.start
-  val controller = new ControllerActor(renderer)
+trait Config {
+  def io: IO
 
-  controller.start
+  val renderer = RenderActor()
 
-  def stop = {
-    controller ! Stop()
-    renderer ! Stop()
-  }
+  val mandelbrot = MandelbrotActor(renderer)
+
+  val controller = ControllerActor(mandelbrot)
+
+  private def stop = controller ! Stop()
 }
 
 object Config {
-  def apply(in: InputStream): Config = new Config(new IO(in))
+  def withConfig(in: InputStream)(f: Config => Unit) = {
+    val config = new Config {
+      val io = new IO(in)
+    }
+
+    try {
+      f(config)
+    } finally {
+      config.stop
+    }
+  }
 }

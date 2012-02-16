@@ -38,7 +38,7 @@ import ScaledView._
  */
 case class Size(width: Int, height: Int)
 object Size {
-  val DefaultSize = Size(100, 100)
+  val DefaultSize = Size(120, 80)
 }
 import Size._
 

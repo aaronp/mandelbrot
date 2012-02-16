@@ -56,15 +56,14 @@ object Main {
   }
 
   def main(args: Array[String]) = {
-    val config = Config(System.in)
-    import config._
+    Config.withConfig(System.in) { config =>
+      import config._
 
-    readLoop(io) { msg =>
-      println("main sending controller " + msg)
-      controller ! msg
+      readLoop(io) { msg =>
+        println("main sending controller " + msg)
+        controller ! msg
+      }
     }
-
-    config.stop
 
     println("Done")
   }

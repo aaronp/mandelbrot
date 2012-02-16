@@ -3,7 +3,7 @@ package com.porpoise.mandelbrot.model
 import com.porpoise.mandelbrot.N
 import com.porpoise.mandelbrot.Color
 
-object Mandelbrot {
+private[model] object Mandelbrot {
 
   /**
    * with the given x and y coords, calculate the given result for the given depth
@@ -28,8 +28,8 @@ object Mandelbrot {
   def mapCoords(size: Size, view: ScaledView, depth: Int): Seq[Result] = {
     val (x1, y1) = (0, 0)
     val (x2, y2) = (size.width, size.height)
-    val ScaledCoords(xMin, xMax) = view.topLeft
-    val ScaledCoords(yMin, yMax) = view.bottomRight
+    val ScaledCoords(xMin, yMin) = view.topLeft
+    val ScaledCoords(xMax, yMax) = view.bottomRight
     val scaleX = Scale.mapRange(x1)(x2)(xMin)(xMax)_
     val scaleY = Scale.mapRange(y1)(y2)(yMin)(yMax)_
     for {
