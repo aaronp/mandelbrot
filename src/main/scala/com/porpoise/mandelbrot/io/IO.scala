@@ -11,14 +11,16 @@ class IO(inputStream: InputStream) {
 
   def readInt(label: String, defaultValue: Int): Option[Int] = {
     print("%s (default %s)".format(label, defaultValue))
-    read(defaultValue) { _.toInt }
+    readLine(defaultValue) { _.toInt }
   }
+  def readNext(): Int = inputStream.read()
+
   def readDouble(label: String, defaultValue: Double): Option[Double] = {
     print("%s (default %s)".format(label, defaultValue))
-    read(defaultValue) { _.toDouble }
+    readLine(defaultValue) { _.toDouble }
   }
 
-  private def read[T](defaultValue: T)(f: String => T): Option[T] = {
+  private def readLine[T](defaultValue: T)(f: String => T): Option[T] = {
     val charIn = reader.readLine
     try {
       Some(f(charIn))

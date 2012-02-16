@@ -19,14 +19,23 @@ object ComputeMandelbrotRequest {
   def unapply(req: ComputeMandelbrotRequest) = Some(req.scaledView, req.size, req.depth)
 }
 
+case class AdjustViewRequest(xDelta: N, yDelta: N, zoomPercentage: N) extends MandelbrotRequest
+object AdjustViewRequest {
+  def up(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 + delta, 1.0)
+  def down(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 - delta, 1.0)
+  def left(delta: N): AdjustViewRequest = AdjustViewRequest(0.5 - delta, 0.5, 1.0)
+  def right(delta: N): AdjustViewRequest = AdjustViewRequest(0.5 + delta, 0.5, 1.0)
+  def zoom(total: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5, total)
+}
+
 case class SetAbsoluteViewRequest(
   scaledView: ScaledView = DefaultView,
   size: Size = DefaultSize,
   depth: Int = 1000) extends MandelbrotRequest with ComputeMandelbrotRequest
 
-case class MandelbrotResult(request : ComputeMandelbrotRequest, results: Seq[Result]) extends MandelbrotResponse
+case class MandelbrotResult(request: ComputeMandelbrotRequest, results: Seq[Result]) extends MandelbrotResponse
 
-case class RenderRequest(text : String) extends MandelbrotRequest
+case class RenderRequest(text: String) extends MandelbrotRequest
 
 /**
  * Representation of a single coordinate

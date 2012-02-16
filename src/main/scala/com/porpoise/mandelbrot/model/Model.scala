@@ -27,9 +27,22 @@ case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords
   lazy val y1 = topLeft.y
   lazy val x2 = bottomRight.x
   lazy val y2 = bottomRight.y
+
+  def xCoords: (N, N) = x1 -> x2
+  def yCoords: (N, N) = y1 -> y2
+
+  def adjust(xLocation: N, yLocation: N, zoom: Double): ScaledView = {
+    val newX: (N, N) = Scale.zoom(xCoords, Scale(location = xLocation, percentage = zoom))
+    val newY: (N, N) = Scale.zoom(yCoords, Scale(location = yLocation, percentage = zoom))
+    ScaledView(newX, newY)
+  }
 }
+
 object ScaledView {
   val DefaultView = ScaledView()
+  def apply(xRange: (N, N), yRange: (N, N)): ScaledView = ScaledView(
+    ScaledCoords(xRange._1, yRange._1),
+    ScaledCoords(xRange._2, yRange._2))
 }
 import ScaledView._
 

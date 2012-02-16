@@ -8,50 +8,29 @@ import com.porpoise.mandelbrot.model.MandelbrotRequest
 import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.ScaledCoords
 import com.porpoise.mandelbrot.model.Stop
+import com.porpoise.mandelbrot.model.AdjustViewRequest
+import com.porpoise.mandelbrot.io._
 
 object Main {
+  import InputCommand._
 
-  def readAbsoluteInput(io: IO): Option[String] = {
-    val results = for {
-      x1 <- io.readInt("From X: ", 0)
-      y1 <- io.readInt("From Y: ", 0)
-      fromXY = Coords(x1, y1)
-      x2 <- io.readInt("To X: ", 200)
-      y2 <- io.readInt("To Y: ", 100)
-      toXY = Coords(x2, y2)
-      scaleX1 <- io.readDouble("Scale X1 (between -2.5 and 1) : ", -2.5)
-      scaleX2 <- io.readDouble("Scale X2 (between %s and 1) : ".format(scaleX1), 1)
-      scaleX = ScaledCoords(scaleX1, scaleX2)
-      scaleY1 <- io.readDouble("Scale Y1 (between -1 and 1) : ", -1)
-      scaleY2 <- io.readDouble("Scale Y2 (between %s and 1) : ".format(scaleY1), 1)
-      scaleY = ScaledCoords(scaleY1, scaleY2)
+  def readLoop(input: InputStream)(onMessage: MandelbrotRequest => Boolean) = {
+    val commandOpt = InputReader.readInput(input)
 
-    } yield {
-      val depth = 1000
-      //val results = Mandelbrot.mapCoords(fromXY, toXY, scaleX, scaleY, depth)
-      //CharacterMap.formatResults(results)
-    }
-    //results.headOption
-    None
-  }
+    val adjustment = 0.1
+    val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
+      case Up => AdjustViewRequest.up(adjustment)
+      case Down => AdjustViewRequest.down(adjustment)
+      case Left => AdjustViewRequest.left(adjustment)
+      case Right => AdjustViewRequest.right(adjustment)
+      case Space => println("space"); Stop()
+      case Plus => AdjustViewRequest.zoom(1.1)
+      case Minus => AdjustViewRequest.zoom(0.9)
+    })
 
-  def readInput(io: IO): Option[MandelbrotRequest] = {
-    val next = for {
-      x1 <- io.readInt("Next: ", 0)
-    } yield x1
-    next match {
-      case Some(_) => Some(SetAbsoluteViewRequest())
-      case None => None
-    }
-  }
-
-  def readLoop(io: IO)(f: MandelbrotRequest => Unit) = {
-    var resultOpt: Option[MandelbrotRequest] = readInput(io)
-    while (resultOpt.isDefined) {
-      f(resultOpt.get)
-      //      println(resultOpt.get)
-      //      println("enter 'quit' (or 'exit', or anything that's not a number) to quit")
-      resultOpt = readInput(io)
+    msgOpt match {
+      case Some(msg) => onMessage(msg); true
+      case None => false
     }
   }
 
@@ -59,9 +38,12 @@ object Main {
     Config.withConfig(System.in) { config =>
       import config._
 
-      readLoop(io) { msg =>
+      controller ! SetAbsoluteViewRequest()
+
+      readLoop(in) { msg =>
         println("main sending controller " + msg)
         controller ! msg
+        true
       }
     }
 

@@ -7,7 +7,7 @@ import com.porpoise.mandelbrot.model.Stop
 import com.porpoise.mandelbrot.render.RenderActor
 
 trait Config {
-  def io: IO
+  val in: InputStream
 
   val renderer = RenderActor()
 
@@ -19,9 +19,9 @@ trait Config {
 }
 
 object Config {
-  def withConfig(in: InputStream)(f: Config => Unit) = {
+  def withConfig(input: InputStream)(f: Config => Unit) = {
     val config = new Config {
-      val io = new IO(in)
+      val in = input
     }
 
     try {

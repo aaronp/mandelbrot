@@ -21,13 +21,13 @@ object Scale {
    *
    * e.g. if the range XY is (-10.0, 10.0) and we're going to adjust the range
    * by:
-   * 
+   *
    * 90% on the left  side => zoom(XY, Scale(0.0, 0.9)) => (-10.0, 8.0)
    * 90% on the right side => zoom(XY, Scale(1.0, 0.9)) => (-8.0, 10.0)
    * 90% on in the middle  => zoom(XY, Scale(0.5, 0.9)) => (-9.0, 9.0)
-   * 
+   *
    */
-  def zoom(coords: (N, N), scale: Scale) : (N,N) = {
+  def zoom(coords: (N, N), scale: Scale): (N, N) = {
     val oldRange = coords._2 - coords._1
     val newRange = oldRange * scale.percentage
     val diff = oldRange - newRange
