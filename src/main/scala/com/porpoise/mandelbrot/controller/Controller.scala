@@ -31,7 +31,7 @@ trait ControllerTrait {
     notifyUpdate
   }
 
-  private def onAdjustView(xDelta: N, yDelta: N, zoom: Double) = {
+  private def onAdjustView(xDelta: N, yDelta: N, zoom: N) = {
     currentScaledView = currentScaledView.adjust(xDelta, yDelta, zoom)
     notifyUpdate
   }

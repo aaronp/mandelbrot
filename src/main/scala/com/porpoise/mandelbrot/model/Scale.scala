@@ -1,7 +1,7 @@
 package com.porpoise.mandelbrot.model
 import com.porpoise.mandelbrot.N
 
-case class Scale(location: Double, percentage: Double) {
+case class Scale(location: N, percentage: N) {
   require(location >= 0.0)
   require(location <= 1.0)
   def apply(coords: (N, N)) = Scale.zoom(coords, this)

@@ -31,7 +31,7 @@ case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords
   def xCoords: (N, N) = x1 -> x2
   def yCoords: (N, N) = y1 -> y2
 
-  def adjust(xLocation: N, yLocation: N, zoom: Double): ScaledView = {
+  def adjust(xLocation: N, yLocation: N, zoom: N): ScaledView = {
     val newX: (N, N) = Scale.zoom(xCoords, Scale(location = xLocation, percentage = zoom))
     val newY: (N, N) = Scale.zoom(yCoords, Scale(location = yLocation, percentage = zoom))
     ScaledView(newX, newY)
