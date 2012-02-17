@@ -21,8 +21,8 @@ object ComputeMandelbrotRequest {
 
 case class AdjustViewRequest(xDelta: N, yDelta: N, zoomPercentage: N) extends MandelbrotRequest
 object AdjustViewRequest {
-  def up(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 + delta, 0.90)
-  def down(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 - delta, 0.90)
+  def up(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 - delta, 0.90)
+  def down(delta: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5 + delta, 0.90)
   def left(delta: N): AdjustViewRequest = AdjustViewRequest(0.5 - delta, 0.5, 0.90)
   def right(delta: N): AdjustViewRequest = AdjustViewRequest(0.5 + delta, 0.5, 0.90)
   def zoom(total: N): AdjustViewRequest = AdjustViewRequest(0.5, 0.5, total)
