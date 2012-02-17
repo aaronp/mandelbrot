@@ -9,7 +9,19 @@ case class Scale(location: Double, percentage: Double) {
 
 object Scale {
 
-  def mapRange(min: N)(max: N)(newMin: N)(newMax: N)(value: N) = {
+  /**
+   * Given the first range, map the target number into the new range
+   *
+   * e.g. given:
+   * <pre>
+   *    OLD   |    NEW   | VALUE | RESULT
+   *   0 - 10 |  0 - 100 |   7   |   70.0
+   * -10 - 10 | 10 - 20  |   0   |   15.0
+   *  50 - 60 |  1 - 5   |  50   |   1.0
+   *  50 - 60 |  1 - 5   |  60   |   5.0
+   * </pre>
+   */
+  def mapRange[R1 <% N, R2 <% N](min: R1)(max: R1)(newMin: R2)(newMax: R2)(value: N): N = {
     val diff = max - min
     val newDiff = newMax - newMin
     newMin + (value - min) / diff * newDiff
@@ -27,7 +39,7 @@ object Scale {
    * 90% on in the middle  => zoom(XY, Scale(0.5, 0.9)) => (-9.0, 9.0)
    *
    */
-  def zoom(coords: (N, N), scale: Scale): (N, N) = {
+  def zoom[T <% N](coords: (T, T), scale: Scale): (N, N) = {
     val oldRange = coords._2 - coords._1
     val newRange = oldRange * scale.percentage
     val diff = oldRange - newRange
