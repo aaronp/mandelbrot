@@ -2,11 +2,10 @@ package com.porpoise.mandelbrot.model
 import scala.actors.Actor
 import com.porpoise.mandelbrot.actors.StoppableActor
 
-trait MandelbrotTrait { this : Actor =>
+trait MandelbrotTrait { this: Actor =>
 
   def handlerMandelbrotRequest: PartialFunction[Any, Unit] = {
     case r @ ComputeMandelbrotRequest(view, size, depth) =>
-      println("mandelbrot computing for " + view)
       val results: Seq[Result] = Mandelbrot.mapCoords(size, view, depth)
       reply(MandelbrotResult(r, results))
   }

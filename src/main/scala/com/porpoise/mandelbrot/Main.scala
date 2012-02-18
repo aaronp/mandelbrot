@@ -26,7 +26,7 @@ object Main {
         case Down => AdjustViewRequest.down(adjustment)
         case Left => AdjustViewRequest.left(adjustment)
         case Right => AdjustViewRequest.right(adjustment)
-        case Space => println("space"); Stop()
+        case Space => Stop()
         case Plus => AdjustViewRequest.zoom(0.9)
         case Minus => AdjustViewRequest.zoom(1.1)
       })
@@ -45,7 +45,6 @@ object Main {
       controller ! SetAbsoluteViewRequest()
 
       readLoop(in) { msg =>
-        println("main sending controller " + msg)
         controller ! msg
         msg != Stop()
       }
