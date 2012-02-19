@@ -32,29 +32,18 @@ case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords
   def yCoords: (N, N) = y1 -> y2
 
   def adjust(xLocation: N, yLocation: N, zoom: N): ScaledView = {
-
-    wip -- this doesn't compile ;-)
-    
-    var newX = x1 -> y1
-    // save a bit of work.. maybe
-    if (zoom != 1.0) {
-      // have to zoom
-      var newX: (N, N) = Scale.zoom(xCoords, Scale(location = 0.5, percentage = zoom))
-      var newY: (N, N) = Scale.zoom(yCoords, Scale(location = 0.5, percentage = zoom))
-    } else {
-
-    }
-    if (xLocation == 1.0) {
-
-    } else {
-      // have to translate X
-    }
-    if (yLocation == 1.0) {
-
-    } else {
-      // have to translate Y
-    }
+    var newX: (N, N) = Scale.zoom(xCoords, Scale(location = 0.5, percentage = zoom))
+    var newY: (N, N) = Scale.zoom(yCoords, Scale(location = 0.5, percentage = zoom))
     ScaledView(newX, newY)
+  }
+  def zoom(percentage: N): ScaledView = adjust(0.5, 0.5, percentage)
+  def translateX(xPercentage: N): ScaledView = {
+    val (newX1, newX2) = Scale.translate(x1, x2, xPercentage)
+    ScaledView(ScaledCoords(newX1, y1), ScaledCoords(newX2, y2))
+  }
+  def translateY(yPercentage: N): ScaledView = {
+    val (newY1, newY2) = Scale.translate(y1, y2, yPercentage)
+    ScaledView(ScaledCoords(x1, newY1), ScaledCoords(x2, newY2))
   }
 
   def toCoords = (x1, y1, x2, y2)
