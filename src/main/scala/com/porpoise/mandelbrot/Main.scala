@@ -8,8 +8,10 @@ import com.porpoise.mandelbrot.model.MandelbrotRequest
 import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.ScaledCoords
 import com.porpoise.mandelbrot.model.Stop
-import com.porpoise.mandelbrot.model.AdjustViewRequest
 import com.porpoise.mandelbrot.io._
+import com.porpoise.mandelbrot.model.TranslateYRequest
+import com.porpoise.mandelbrot.model.ZoomRequest
+import com.porpoise.mandelbrot.model.TranslateXRequest
 
 object Main {
   import InputCommand._
@@ -22,13 +24,13 @@ object Main {
 
       val adjustment = 0.1
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
-        case Up => AdjustViewRequest.up(adjustment)
-        case Down => AdjustViewRequest.down(adjustment)
-        case Left => AdjustViewRequest.left(adjustment)
-        case Right => AdjustViewRequest.right(adjustment)
+        case Up => TranslateYRequest(adjustment)
+        case Down => TranslateYRequest(1.0 - adjustment)
+        case Left => TranslateXRequest(1.0 - adjustment)
+        case Right => TranslateXRequest(adjustment)
         case Space => Stop()
-        case Plus => AdjustViewRequest.zoom(0.9)
-        case Minus => AdjustViewRequest.zoom(1.1)
+        case Plus => ZoomRequest(1.0 - adjustment)
+        case Minus => ZoomRequest(adjustment)
       })
 
       reading = msgOpt match {

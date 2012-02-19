@@ -6,12 +6,14 @@ import com.porpoise.mandelbrot.actors.StoppableActor
 import com.porpoise.mandelbrot.model.Mandelbrot
 import com.porpoise.mandelbrot.model.MandelbrotResult
 import com.porpoise.mandelbrot.model.Result
-import com.porpoise.mandelbrot.model.AdjustViewRequest
 import com.porpoise.mandelbrot.model.ScaledView
 import com.porpoise.mandelbrot.model.Size
 import com.porpoise.mandelbrot.model.ComputeMandelbrotRequest
 import com.porpoise.mandelbrot.model.Scale
 import com.porpoise.mandelbrot.N
+import com.porpoise.mandelbrot.model.ZoomRequest
+import com.porpoise.mandelbrot.model.TranslateXRequest
+import com.porpoise.mandelbrot.model.TranslateYRequest
 
 trait ControllerTrait {
 
@@ -31,8 +33,8 @@ trait ControllerTrait {
     notifyUpdate
   }
 
-  private def onAdjustView(xDelta: N, yDelta: N, zoom: N) = {
-    currentScaledView = currentScaledView.adjust(xDelta, yDelta, zoom)
+  private def onUpdateView(f: => ScaledView) = {
+    currentScaledView = f
     notifyUpdate
   }
 
@@ -41,7 +43,17 @@ trait ControllerTrait {
     // TODO - maintain a map between requests and the time sent
     case SetAbsoluteViewRequest(view, size, depth) => onComputeMandelbrotRequest(view, size, depth)
 
-    case AdjustViewRequest(xDelta, yDelta, zoomPercent) => onAdjustView(xDelta, yDelta, zoomPercent)
+    case TranslateXRequest(percentage) => onUpdateView {
+      currentScaledView.translateX(percentage)
+    }
+
+    case TranslateYRequest(percentage) => onUpdateView {
+      currentScaledView.translateY(percentage)
+    }
+
+    case ZoomRequest(percentage) => onUpdateView {
+      currentScaledView.zoom(percentage)
+    }
 
     // TODO - decorate the result with controls and timings, sending a RenderRequest instead
     case r @ MandelbrotResult(req, result) => renderActor.forward(r)

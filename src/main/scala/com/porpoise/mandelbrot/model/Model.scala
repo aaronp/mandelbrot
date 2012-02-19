@@ -31,12 +31,11 @@ case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords
   def xCoords: (N, N) = x1 -> x2
   def yCoords: (N, N) = y1 -> y2
 
-  def adjust(xLocation: N, yLocation: N, zoom: N): ScaledView = {
-    var newX: (N, N) = Scale.zoom(xCoords, Scale(location = 0.5, percentage = zoom))
-    var newY: (N, N) = Scale.zoom(yCoords, Scale(location = 0.5, percentage = zoom))
+  def zoom(percentage: N): ScaledView = {
+    var newX: (N, N) = Scale.zoom(xCoords, percentage = percentage)
+    var newY: (N, N) = Scale.zoom(yCoords, percentage = percentage)
     ScaledView(newX, newY)
   }
-  def zoom(percentage: N): ScaledView = adjust(0.5, 0.5, percentage)
   def translateX(xPercentage: N): ScaledView = {
     val (newX1, newX2) = Scale.translate(x1, x2, xPercentage)
     ScaledView(ScaledCoords(newX1, y1), ScaledCoords(newX2, y2))

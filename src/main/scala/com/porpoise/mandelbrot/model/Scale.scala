@@ -1,12 +1,6 @@
 package com.porpoise.mandelbrot.model
 import com.porpoise.mandelbrot.N
 
-case class Scale(location: N, percentage: N) {
-  require(location >= 0.0)
-  require(location <= 1.0)
-  def apply(coords: (N, N)) = Scale.zoom(coords, this)
-}
-
 object Scale {
 
   /**
@@ -46,11 +40,11 @@ object Scale {
    * 90% on in the middle  => zoom(XY, Scale(0.5, 0.9)) => (-9.0, 9.0)
    *
    */
-  def zoom[T <% N](coords: (T, T), scale: Scale): (N, N) = {
+  def zoom[T <% N](coords: (T, T), percentage: N): (N, N) = {
     val oldRange = coords._2 - coords._1
-    val newRange = oldRange * scale.percentage
+    val newRange = oldRange * percentage
     val diff = oldRange - newRange
-    val offset = diff * scale.location
+    val offset = diff * 0.5
     val newLeft = coords._1 + offset
     val newRight = newLeft + newRange
     (newLeft, newRight)

@@ -27,21 +27,17 @@ object ComputeMandelbrotRequest {
 }
 
 /**
- * The result of a calcualte mandelbrot request
+ * The result of a calculate mandelbrot request
  */
 case class MandelbrotResult(request: ComputeMandelbrotRequest, results: Seq[Result]) extends MandelbrotResponse
 
 /**
  * An adjust view request is a control message used to move/zoom the view
  */
-case class AdjustViewRequest(xPercentage: N, yPercentage: N, zoomPercentage: N) extends MandelbrotRequest
-object AdjustViewRequest {
-  def up(delta: N): AdjustViewRequest = AdjustViewRequest(1.0, 0 - delta, 1.0)
-  def down(delta: N): AdjustViewRequest = AdjustViewRequest(1.0, delta, 1.0)
-  def left(delta: N): AdjustViewRequest = AdjustViewRequest(0 - delta, 1.0, 1.0)
-  def right(delta: N): AdjustViewRequest = AdjustViewRequest(delta, 1.0, 1.0)
-  def zoom(percentage: N): AdjustViewRequest = AdjustViewRequest(1.0, 1.0, percentage)
-}
+sealed trait MandelbrotAdjustRequest extends MandelbrotRequest
+case class TranslateXRequest(percentage: N) extends MandelbrotAdjustRequest
+case class TranslateYRequest(percentage: N) extends MandelbrotAdjustRequest
+case class ZoomRequest(percentage: N) extends MandelbrotAdjustRequest
 
 /**
  * Set the absolute view to the given scale, size and depth
