@@ -27,6 +27,13 @@ object Scale {
     newMin + (value - min) / diff * newDiff
   }
 
+  def translate[T](x: N, y: N, percentage: N)(implicit nToT: N => T): (T, T) = {
+    val newRange = (y - x) * percentage
+    val newX: T = x + newRange
+    val newY: T = y + newRange
+    (newX, newY)
+  }
+
   /**
    * given some coordinates, 'zoom' in on a part of those coordinates
    * using the given scale.
