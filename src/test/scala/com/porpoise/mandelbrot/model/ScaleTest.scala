@@ -7,7 +7,7 @@ import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
-class ScaleTest extends Spec with ShouldMatchers {
+class ScaleTest extends BaseSpec {
 
   describe("Scale.translate") {
 
@@ -27,13 +27,12 @@ class ScaleTest extends Spec with ShouldMatchers {
   }
   describe("Scale.mapRange") {
     it("should be able to scale the range -10 to 10 as a percentage") {
-      val uncertainty = 0.0001
       val negativeTenToTenAsPercentage = Scale.mapRange(-10)(10)(0.0)(100) _
-      Assert.assertEquals(0, negativeTenToTenAsPercentage(-10), uncertainty)
-      Assert.assertEquals(100, negativeTenToTenAsPercentage(10), uncertainty)
-      Assert.assertEquals(50, negativeTenToTenAsPercentage(0), uncertainty)
-      Assert.assertEquals(25, negativeTenToTenAsPercentage(-5), uncertainty)
-      Assert.assertEquals(75, negativeTenToTenAsPercentage(5), uncertainty)
+      assertEquals(0, negativeTenToTenAsPercentage(-10))
+      assertEquals(100, negativeTenToTenAsPercentage(10))
+      assertEquals(50, negativeTenToTenAsPercentage(0))
+      assertEquals(25, negativeTenToTenAsPercentage(-5))
+      assertEquals(75, negativeTenToTenAsPercentage(5))
     }
   }
 }
