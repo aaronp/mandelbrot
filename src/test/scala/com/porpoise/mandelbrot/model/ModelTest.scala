@@ -20,8 +20,8 @@ class ModelTest extends BaseSpec {
       assertEquals(140, y1)
       assertEquals(160, y2)
     }
-    it("should be able to zoom -20%") {
-      val (x1, y1, x2, y2) = original.zoom(-0.2).toCoords
+    it("should be able to zoom 120%") {
+      val (x1, y1, x2, y2) = original.zoom(1.2).toCoords
       assertEquals(-1.0, x1)
       assertEquals(11, x2)
       assertEquals(90, y1)

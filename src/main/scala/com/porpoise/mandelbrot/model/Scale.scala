@@ -41,6 +41,7 @@ object Scale {
    *
    */
   def zoom[T <% N](coords: (T, T), percentage: N): (N, N) = {
+    require(percentage >= 0.0, "percentage must be positive: %s".format(percentage))
     val oldRange = coords._2 - coords._1
     val newRange = oldRange * percentage
     val diff = oldRange - newRange
