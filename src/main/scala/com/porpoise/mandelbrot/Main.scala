@@ -24,13 +24,13 @@ object Main {
 
       val adjustment = 0.1
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
-        case Up => TranslateYRequest(adjustment)
-        case Down => TranslateYRequest(1.0 - adjustment)
-        case Left => TranslateXRequest(1.0 - adjustment)
+        case Up => TranslateYRequest(-1 * adjustment)
+        case Down => TranslateYRequest(adjustment)
+        case Left => TranslateXRequest(-1 * adjustment)
         case Right => TranslateXRequest(adjustment)
         case Space => Stop()
         case Plus => ZoomRequest(1.0 - adjustment)
-        case Minus => ZoomRequest(adjustment)
+        case Minus => ZoomRequest(1.0 + adjustment)
       })
 
       reading = msgOpt match {
