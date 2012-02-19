@@ -33,6 +33,8 @@ case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords
 
   def adjust(xLocation: N, yLocation: N, zoom: N): ScaledView = {
 
+    wip -- this doesn't compile ;-)
+    
     var newX = x1 -> y1
     // save a bit of work.. maybe
     if (zoom != 1.0) {
