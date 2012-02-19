@@ -11,24 +11,23 @@ class ScaleTest extends BaseSpec {
 
   describe("Scale.zoom to the centre") {
 
-    val centre = 0.5
-    it("should be able to zoom -20%") {
-      val percentage = -0.2
-      val (x, y) = Scale.zoom(0 -> 100, percentage)
-      assertEquals(-10, x)
-      assertEquals(100, y)
-    }
-    it("should be able to zoom 20%") {
+    it("should be able to zoom to 20%") {
       val percentage = 0.2
       val (x, y) = Scale.zoom(0 -> 100, percentage)
-      assertEquals(10, x)
-      assertEquals(90, y)
+      assertEquals(40, x)
+      assertEquals(60, y)
     }
-    it("should be able to zoom -100%") {
-      val percentage = -1.0
+    it("should be able to zoom to 50%") {
+      val percentage = 0.5
       val (x, y) = Scale.zoom(0 -> 100, percentage)
-      assertEquals(-50, x)
-      assertEquals(150, y)
+      assertEquals(25, x)
+      assertEquals(75, y)
+    }
+    it("should be able to zoom to 110%") {
+      val percentage = 1.1
+      val (x, y) = Scale.zoom(0 -> 100, percentage)
+      assertEquals(-5.0, x)
+      assertEquals(105.0, y)
     }
   }
   describe("Scale.translate") {

@@ -21,8 +21,8 @@ import ScaledCoords._
  * SCALED VIEW
  */
 case class ScaledView(topLeft: ScaledCoords = TopLeft, bottomRight: ScaledCoords = BottomRight) {
-  require(topLeft.x <= bottomRight.x)
-  require(topLeft.y <= bottomRight.y)
+  require(topLeft.x <= bottomRight.x, "invalid view x: topLeft=%s, bottomRight=%s".format(topLeft, bottomRight))
+  require(topLeft.y <= bottomRight.y, "invalid view y: topLeft=%s, bottomRight=%s".format(topLeft, bottomRight))
   lazy val x1 = topLeft.x
   lazy val y1 = topLeft.y
   lazy val x2 = bottomRight.x
