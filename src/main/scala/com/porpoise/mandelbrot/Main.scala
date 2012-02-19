@@ -22,15 +22,15 @@ object Main {
     while (reading) {
       val commandOpt = InputReader.readInput(input)
 
-      val adjustment = 0.1
+      val adjustment: Percentage = 10
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(command => command match {
         case Up => TranslateYRequest(-1 * adjustment)
         case Down => TranslateYRequest(adjustment)
         case Left => TranslateXRequest(-1 * adjustment)
         case Right => TranslateXRequest(adjustment)
         case Space => Stop()
-        case Plus => ZoomRequest(1.0 - adjustment)
-        case Minus => ZoomRequest(1.0 + adjustment)
+        case Plus => ZoomRequest(100 - adjustment)
+        case Minus => ZoomRequest(100 + adjustment)
       })
 
       reading = msgOpt match {

@@ -24,6 +24,10 @@ trait ControllerTrait {
   protected var currentSize: Size = _
   protected var currentDepth: Int = _
 
+  protected var translateXPercentage: Int = 0
+  protected var translateYPercentage: Int = 0
+  protected var zoomPercentage: Int = 100
+
   private def notifyUpdate = mandelbrotActor ! SetAbsoluteViewRequest(currentScaledView, currentSize, currentDepth)
 
   private def onComputeMandelbrotRequest(newView: ScaledView, newSize: Size, newDepth: Int) = {
@@ -33,9 +37,30 @@ trait ControllerTrait {
     notifyUpdate
   }
 
-  private def onUpdateView(f: => ScaledView) = {
-    currentScaledView = f
-    notifyUpdate
+  private def onUpdateView(f: => Unit) = {
+    def percentageAsDecimal(p: Int): N = p / 100.0
+
+    f
+
+    var view = currentScaledView
+    var changed = false
+
+    if (translateXPercentage != 0) {
+      view = view.translateX(percentageAsDecimal(translateXPercentage))
+      changed = true
+    }
+    if (translateYPercentage != 0) {
+      view = view.translateY(percentageAsDecimal(translateYPercentage))
+      changed = true
+    }
+    if (zoomPercentage != 100) {
+      view = view.translateY(percentageAsDecimal(translateYPercentage))
+      changed = true
+    }
+
+    if (changed) {
+      notifyUpdate
+    }
   }
 
   def controllerHandlers: PartialFunction[Any, Unit] = {
@@ -44,15 +69,15 @@ trait ControllerTrait {
     case SetAbsoluteViewRequest(view, size, depth) => onComputeMandelbrotRequest(view, size, depth)
 
     case TranslateXRequest(percentage) => onUpdateView {
-      currentScaledView.translateX(percentage)
+      translateXPercentage = translateXPercentage + percentage
     }
 
     case TranslateYRequest(percentage) => onUpdateView {
-      currentScaledView.translateY(percentage)
+      translateYPercentage = translateYPercentage + percentage
     }
 
     case ZoomRequest(percentage) => onUpdateView {
-      currentScaledView.zoom(percentage)
+      zoomPercentage = zoomPercentage + percentage
     }
 
     // TODO - decorate the result with controls and timings, sending a RenderRequest instead

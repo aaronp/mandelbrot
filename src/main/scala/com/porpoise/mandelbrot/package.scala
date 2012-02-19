@@ -7,6 +7,8 @@ package object mandelbrot {
   //type N = BigDecimal
   type N = Double
 
+  type Percentage = Int
+
   type Color = Int
 
 }

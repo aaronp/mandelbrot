@@ -35,9 +35,15 @@ case class MandelbrotResult(request: ComputeMandelbrotRequest, results: Seq[Resu
  * An adjust view request is a control message used to move/zoom the view
  */
 sealed trait MandelbrotAdjustRequest extends MandelbrotRequest
-case class TranslateXRequest(percentage: N) extends MandelbrotAdjustRequest
-case class TranslateYRequest(percentage: N) extends MandelbrotAdjustRequest
-case class ZoomRequest(percentage: N) extends MandelbrotAdjustRequest
+case class TranslateXRequest(percentage: Percentage) extends MandelbrotAdjustRequest
+case class TranslateYRequest(percentage: Percentage) extends MandelbrotAdjustRequest
+case class ZoomRequest(percentage: Percentage) extends MandelbrotAdjustRequest
+
+/**
+ * start auto-play
+ */
+case class StartAutoPlay() extends MandelbrotRequest
+case class StopAutoPlay() extends MandelbrotRequest
 
 /**
  * Set the absolute view to the given scale, size and depth
