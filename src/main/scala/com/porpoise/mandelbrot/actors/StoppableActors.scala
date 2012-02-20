@@ -1,7 +1,8 @@
 package com.porpoise.mandelbrot.actors
 import com.porpoise.mandelbrot.model.Stop
+import scala.actors.Actor
 
-trait StoppableActor {
+trait StoppableActor { this: Actor =>
   protected var running = true
 
   // hook for subclasses

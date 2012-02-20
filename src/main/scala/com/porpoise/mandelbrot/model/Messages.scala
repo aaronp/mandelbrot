@@ -39,10 +39,21 @@ case class TranslateXRequest(percentage: Percentage) extends MandelbrotAdjustReq
 case class TranslateYRequest(percentage: Percentage) extends MandelbrotAdjustRequest
 case class ZoomRequest(percentage: Percentage) extends MandelbrotAdjustRequest
 
+/** Forces a redraw w/o any other change screen */
+case class UpdateRequest() extends MandelbrotRequest
+
+case class GetStateRequest() extends MandelbrotRequest
+case class GetStateResponse(scaledView: ScaledView, resolution: Size, translateXPercentage: Percentage, translateYPercentage: Percentage, zoomPercentage: Percentage) extends MandelbrotResponse
+
+case class SetStateRequest(
+  translateXPercentage: Percentage = 0,
+  translateYPercentage: Percentage = 0,
+  zoomPercentage: Percentage = 100) extends MandelbrotRequest
+
 /**
  * start auto-play
  */
-case class StartAutoPlay() extends MandelbrotRequest
+case class StartAutoPlay(delayInMillis: Int = 2000) extends MandelbrotRequest
 case class StopAutoPlay() extends MandelbrotRequest
 
 /**
