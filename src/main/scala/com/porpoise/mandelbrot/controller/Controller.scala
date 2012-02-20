@@ -29,10 +29,14 @@ trait TimedUpdate { thisActor: Actor =>
 
   protected def newMessage: Any = UpdateRequest()
 
+  protected def targetActor: Actor = thisActor
+
   private def onStart(delayInMillis: Int) = {
 
-    def startTimer: Actor = TimedActor(thisActor, delayInMillis) { () =>
-      newMessage
+    def startTimer: Actor = TimedActor(targetActor, delayInMillis) { () =>
+      val msg = newMessage
+      println("sending " + msg)
+      msg
     }
 
     timedCaller = timedCaller match {
@@ -42,6 +46,8 @@ trait TimedUpdate { thisActor: Actor =>
   }
 
   private def onStop = {
+    println(" STOP! " * 20)
+
     timedCaller foreach { t => t ! Stop() }
     timedCaller = None
   }
@@ -50,7 +56,7 @@ trait TimedUpdate { thisActor: Actor =>
 
     case StartAutoPlay(delayInMillis) => onStart(delayInMillis)
 
-    case StopAutoPlay() => onStop
+    case stop: StopAutoPlay => onStop
   }
 }
 

@@ -16,8 +16,5 @@ trait StoppableActor { this: Actor =>
   }
   val stopHandler: PartialFunction[Any, Unit] = {
     case Stop() => stopInternal()
-    //  }
-    //  val notExpectedHandler: PartialFunction[Any, Unit] = {
-    case other => println(getClass().getSimpleName() + " received unexpected message " + other)
   }
 }

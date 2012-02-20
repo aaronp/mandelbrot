@@ -14,7 +14,6 @@ class ModelTest extends BaseSpec {
   describe("ScaledView.zoom") {
     it("should be able to zoom 20%") {
       val (x1, y1, x2, y2) = original.zoom(0.2).toCoords
-      println("zoomed:" + original.zoom(0.2))
       assertEquals(4, x1)
       assertEquals(6, x2)
       assertEquals(140, y1)
