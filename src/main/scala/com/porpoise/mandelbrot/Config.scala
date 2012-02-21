@@ -22,7 +22,7 @@ trait Config {
   val adjustment: Percentage = 1
   val refreshRateInMillis = 100
   val defaultResolution: Size = Size.DefaultSize
-  val resolution: Size = Size(160, 40)
+  val resolution: Size = Size(80, 20)
 
   val renderer = RenderActor()
 
