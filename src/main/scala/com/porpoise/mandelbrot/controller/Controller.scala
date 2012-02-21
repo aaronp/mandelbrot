@@ -147,7 +147,7 @@ private class ControllerActor(val mandelbrotActor: Actor, val renderActor: Actor
   }
   override def onStop() = {
     // in case we're auto-zooming, stop
-    this ! StopAutoPlay()
+    stopAutoPlay
     mandelbrotActor ! Stop()
     renderActor ! Stop()
   }

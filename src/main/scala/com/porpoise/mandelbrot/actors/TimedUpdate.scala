@@ -44,7 +44,7 @@ trait TimedUpdate { thisActor: Actor =>
     }
   }
 
-  private def onStop = {
+  protected def stopAutoPlay = {
     timedCaller foreach { t => t ! Stop() }
     timedCaller = None
   }
@@ -53,6 +53,6 @@ trait TimedUpdate { thisActor: Actor =>
 
     case StartAutoPlay(delayInMillis) => onStart(delayInMillis)
 
-    case stop: StopAutoPlay => onStop
+    case stop: StopAutoPlay => stopAutoPlay
   }
 }

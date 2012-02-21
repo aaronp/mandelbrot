@@ -20,7 +20,7 @@ trait Config {
 
   val in: InputStream
   val adjustment: Percentage = 5
-  val refreshRateInMillis = 500
+  val refreshRateInMillis = 100
   val defaultResolution: Size = Size.DefaultSize
   val resolution: Size = Size(60, 40)
 
