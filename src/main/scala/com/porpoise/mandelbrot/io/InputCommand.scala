@@ -36,7 +36,7 @@ object InputCommand extends Enumeration {
   val StartAutoPlay = Value(119) // 'w'
   lazy val StartAutoPlayId = StartAutoPlay.id
 
-  val StopAutoPlay = Value(116) // 's'
+  val StopAutoPlay = Value(117) // 's'
   lazy val StopAutoPlayId = StopAutoPlay.id
 
   val charCommands = Seq(Space, Plus, Minus, GetState, Reset, Quit, StartAutoPlay, StopAutoPlay)

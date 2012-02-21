@@ -19,14 +19,13 @@ import com.porpoise.mandelbrot.model.ZoomRequest
 object Main {
   import InputCommand._
 
-  def readLoop(input: InputStream)(onMessage: MandelbrotRequest => Boolean) = {
+  def readLoop(config: Config)(onMessage: MandelbrotRequest => Boolean) = {
+    import config._
 
     var reading = true
     while (reading) {
-      val commandOpt = InputReader.readInput(input)
+      val commandOpt = InputReader.readInput(in)
 
-      val adjustment: Percentage = 5
-      val refreshRateInMillis = 500
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(_ match {
         case Up => TranslateYRequest(-1 * adjustment)
         case Down => TranslateYRequest(adjustment)
@@ -54,9 +53,10 @@ object Main {
     Config.withConfig(System.in) { config =>
       import config._
 
-      controller ! SetAbsoluteViewRequest()
+      // start by rendering the initial view
+      controller ! SetAbsoluteViewRequest(size = resolution)
 
-      readLoop(in) { msg =>
+      readLoop(config) { msg =>
         controller ! msg
         msg != Stop()
       }
