@@ -33,11 +33,7 @@ trait TimedUpdate { thisActor: Actor =>
 
   private def onStart(delayInMillis: Int) = {
 
-    def startTimer: Actor = TimedActor(targetActor, delayInMillis) { () =>
-      val msg = newMessage
-      println("sending " + msg)
-      msg
-    }
+    def startTimer: Actor = TimedActor(targetActor, delayInMillis) { newMessage _ }
 
     timedCaller = timedCaller match {
       case None => Some(startTimer)
@@ -46,8 +42,6 @@ trait TimedUpdate { thisActor: Actor =>
   }
 
   private def onStop = {
-    println(" STOP! " * 20)
-
     timedCaller foreach { t => t ! Stop() }
     timedCaller = None
   }
@@ -104,7 +98,6 @@ trait ControllerTrait { this: Actor =>
     val oldView = currentScaledView
     currentScaledView = calculateNewView
 
-    println("x:=%s;y:=%s;zoom:=%s".format(translateXPercentage, translateYPercentage, zoomPercentage))
     if (oldView != currentScaledView) {
       notifyUpdate
     }

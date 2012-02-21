@@ -22,14 +22,16 @@ class TimedUpdateTest extends Spec {
        * create a timer actor which can be started and stopped
        */
       object TimerActor extends Actor with TimedUpdate with StoppableActor {
-        private var messages = (0 to 100).toList
+        private var messages = (0 to 10).toList
         override def newMessage = messages match {
           case h :: tail => messages = tail; h
           case Nil => Assert.fail("reached the end of the messages")
         }
         override def targetActor = testThread
 
-        def act() = react(autoPlayHandler orElse stopHandler)
+        def act() = loopWhile(running) {
+          react(autoPlayHandler orElse stopHandler)
+        }
       }
       TimerActor.start
 
