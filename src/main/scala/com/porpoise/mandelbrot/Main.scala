@@ -25,7 +25,8 @@ object Main {
     while (reading) {
       val commandOpt = InputReader.readInput(input)
 
-      val adjustment: Percentage = 10
+      val adjustment: Percentage = 5
+      val refreshRateInMillis = 500
       val msgOpt: Option[MandelbrotRequest] = commandOpt.map(_ match {
         case Up => TranslateYRequest(-1 * adjustment)
         case Down => TranslateYRequest(adjustment)
@@ -38,7 +39,7 @@ object Main {
         case Quit => Stop()
         case GetState => GetStateRequest()
         case Reset => SetStateRequest()
-        case StartAutoPlay => Play()
+        case StartAutoPlay => Play(refreshRateInMillis)
         case StopAutoPlay => Pause()
       })
 

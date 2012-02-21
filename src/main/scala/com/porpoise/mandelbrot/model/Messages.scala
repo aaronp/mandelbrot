@@ -53,7 +53,7 @@ case class SetStateRequest(
 /**
  * start auto-play
  */
-case class StartAutoPlay(delayInMillis: Int = 2000) extends MandelbrotRequest
+case class StartAutoPlay(delayInMillis: Int) extends MandelbrotRequest
 case class StopAutoPlay() extends MandelbrotRequest
 
 /**
