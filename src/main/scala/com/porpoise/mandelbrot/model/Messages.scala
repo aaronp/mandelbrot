@@ -3,6 +3,7 @@ package com.porpoise.mandelbrot.model
 import com.porpoise.mandelbrot._
 import ScaledView._
 import Size._
+import com.porpoise.mandelbrot.Constants._
 
 sealed trait MandelbrotRequest
 sealed trait MandelbrotResponse

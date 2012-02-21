@@ -1,7 +1,6 @@
 package com.porpoise.mandelbrot.model
 
-import com.porpoise.mandelbrot.N
-import com.porpoise.mandelbrot.Color
+import com.porpoise.mandelbrot.Constants._
 
 private[model] object Mandelbrot {
 

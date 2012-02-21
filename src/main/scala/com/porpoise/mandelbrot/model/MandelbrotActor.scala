@@ -1,6 +1,7 @@
 package com.porpoise.mandelbrot.model
 import scala.actors.Actor
 import com.porpoise.mandelbrot.actors.StoppableActor
+import com.porpoise.mandelbrot.Constants._
 
 trait MandelbrotTrait { this: Actor =>
 

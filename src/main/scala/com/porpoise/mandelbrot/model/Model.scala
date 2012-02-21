@@ -1,6 +1,6 @@
 package com.porpoise.mandelbrot.model
 
-import com.porpoise.mandelbrot._
+import com.porpoise.mandelbrot.Constants.N
 
 /**
  * COORDS
@@ -54,7 +54,6 @@ object ScaledView {
     ScaledCoords(xRange._1, yRange._1),
     ScaledCoords(xRange._2, yRange._2))
 }
-import ScaledView._
 
 /**
  * SIZE
@@ -63,5 +62,4 @@ case class Size(width: Int, height: Int)
 object Size {
   val DefaultSize = Size(120, 80)
 }
-import Size._
 

@@ -17,8 +17,8 @@ import com.porpoise.mandelbrot.model.TranslateXRequest
 import com.porpoise.mandelbrot.model.TranslateYRequest
 import com.porpoise.mandelbrot.model.UpdateRequest
 import com.porpoise.mandelbrot.model.ZoomRequest
-import com.porpoise.mandelbrot.N
-import com.porpoise.mandelbrot.Percentage
+import com.porpoise.mandelbrot.Constants.N
+import com.porpoise.mandelbrot.Constants.Percentage
 import com.porpoise.mandelbrot.model.RenderRequest
 import com.porpoise.mandelbrot.render.CharacterMap
 import com.porpoise.mandelbrot.model.Result

@@ -1,10 +1,13 @@
 package com.porpoise.mandelbrot.actors
-import com.porpoise.mandelbrot.model.Stop
-import scala.actors._
-import System.{ currentTimeMillis => now }
+import java.lang.System.{currentTimeMillis => now}
+
+import scala.actors.Actor
+import scala.actors.DaemonActor
+
+import com.porpoise.mandelbrot.actors.StoppableActor
 
 private object Timeout
-private class TimedActor(targetActor: Actor, intervalInMillis: Long, makeNewMessage: () => Any) extends Actor with StoppableActor {
+private class TimedActor(targetActor: Actor, intervalInMillis: Long, makeNewMessage: () => Any) extends DaemonActor with StoppableActor {
 
   def act() = {
     loopWhile(running) { receive(stopHandler orElse handler) }

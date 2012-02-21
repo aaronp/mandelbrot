@@ -1,8 +1,9 @@
 package com.porpoise.mandelbrot.model
+import org.junit.Assert
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.Spec
-import com.porpoise.mandelbrot.N
-import org.junit.Assert
+import com.porpoise.mandelbrot.Constants.N
+import com.porpoise.mandelbrot.Constants.Percentage
 
 class BaseSpec extends Spec with ShouldMatchers {
 

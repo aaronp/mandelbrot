@@ -1,14 +1,11 @@
-package com.porpoise
+package com.porpoise.mandelbrot
 
-package object mandelbrot {
-  val NewLine = "%n".format()
-
+object Constants {
   // just for fun, try making N a BigDecimal... and get yourself a cup of coffee! ;-)
   //type N = BigDecimal
+  val NewLine = "%n".format()
   type N = Double
-
   type Percentage = Int
-
   type Color = Int
 
 }

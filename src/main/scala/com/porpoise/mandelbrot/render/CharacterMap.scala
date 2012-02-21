@@ -4,6 +4,7 @@ import com.porpoise.mandelbrot._
 import com.porpoise.mandelbrot.model.Result
 import com.porpoise.mandelbrot.model.Coords
 import com.porpoise.mandelbrot.model.Scale
+import com.porpoise.mandelbrot.Constants._
 
 class CharacterMap(min: Int, max: Int) {
 

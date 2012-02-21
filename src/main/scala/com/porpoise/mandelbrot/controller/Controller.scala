@@ -1,6 +1,5 @@
 package com.porpoise.mandelbrot.controller
 import scala.actors.Actor
-
 import com.porpoise.mandelbrot.actors.StoppableActor
 import com.porpoise.mandelbrot.io.InputCommand
 import com.porpoise.mandelbrot.model.GetStateRequest
@@ -17,9 +16,9 @@ import com.porpoise.mandelbrot.model.TranslateXRequest
 import com.porpoise.mandelbrot.model.TranslateYRequest
 import com.porpoise.mandelbrot.model.UpdateRequest
 import com.porpoise.mandelbrot.model.ZoomRequest
-import com.porpoise.mandelbrot.N
-import com.porpoise.mandelbrot.Percentage
+import com.porpoise.mandelbrot.Constants._
 import com.porpoise.mandelbrot.render.CharacterMap
+import com.porpoise.mandelbrot.model.StopAutoPlay
 
 /**
  * Trait which holds the render logic
@@ -147,6 +146,8 @@ private class ControllerActor(val mandelbrotActor: Actor, val renderActor: Actor
     }
   }
   override def onStop() = {
+    // in case we're auto-zooming, stop
+    this ! StopAutoPlay()
     mandelbrotActor ! Stop()
     renderActor ! Stop()
   }

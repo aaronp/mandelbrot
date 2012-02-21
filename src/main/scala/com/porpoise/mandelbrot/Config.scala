@@ -5,6 +5,7 @@ import com.porpoise.mandelbrot.model.MandelbrotActor
 import com.porpoise.mandelbrot.model.Stop
 import com.porpoise.mandelbrot.render.RenderActor
 import com.porpoise.mandelbrot.model.Size
+import Constants._
 
 /**
  * The configuration (Config) contains the common declaration for the common actors:
@@ -16,8 +17,8 @@ import com.porpoise.mandelbrot.model.Size
  * It also exposes a 'stop' convenience method for shutting down these actors
  */
 trait Config {
-  val in: InputStream
 
+  val in: InputStream
   val adjustment: Percentage = 5
   val refreshRateInMillis = 500
   val defaultResolution: Size = Size.DefaultSize
