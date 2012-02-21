@@ -31,7 +31,7 @@ object Main {
         case Down => TranslateYRequest(adjustment)
         case Left => TranslateXRequest(-1 * adjustment)
         case Right => TranslateXRequest(adjustment)
-        case Space => UpdateRequest()
+        case Space => SetAbsoluteViewRequest(size = resolution)
         case Plus => ZoomRequest(-1 * adjustment)
         case Minus => ZoomRequest(adjustment)
         case Minus => ZoomRequest(-1 * adjustment)

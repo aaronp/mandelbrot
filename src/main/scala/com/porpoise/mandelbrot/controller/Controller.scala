@@ -120,12 +120,11 @@ trait ControllerTrait { this: Actor =>
     }
 
     // TODO - decorate the result with controls and timings, sending a RenderRequest instead
-    case r @ MandelbrotResult(req, result) =>
-      {
-        val textAndFooter = resultToString(result)
-        val renderRequest = RenderRequest(textAndFooter)
-        renderActor ! renderRequest
-      }
+    case r @ MandelbrotResult(req, result) => {
+      val textAndFooter = resultToString(result)
+      val renderRequest = RenderRequest(textAndFooter)
+      renderActor ! renderRequest
+    }
   }
 
 }

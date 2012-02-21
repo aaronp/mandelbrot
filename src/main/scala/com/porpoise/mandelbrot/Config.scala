@@ -19,10 +19,10 @@ import Constants._
 trait Config {
 
   val in: InputStream
-  val adjustment: Percentage = 5
+  val adjustment: Percentage = 1
   val refreshRateInMillis = 100
   val defaultResolution: Size = Size.DefaultSize
-  val resolution: Size = Size(60, 40)
+  val resolution: Size = Size(160, 40)
 
   val renderer = RenderActor()
 
