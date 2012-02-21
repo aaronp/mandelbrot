@@ -7,15 +7,17 @@ import com.porpoise.mandelbrot.model.Scale
 
 class CharacterMap(min: Int, max: Int) {
 
+  private def c(color: Int)(s: String) = "%c[1;%sm%s".format(27, color, s)
   private val red = c(31) _
   private val green = c(32) _
   private val yellow = c(33) _
   private val blue = c(34) _
-  private def black(s: String) = blue(s) //(s: String) => s
+  private val something = c(35) _
+  private val somethingElse = c(36) _
+  private val wot = c(37) _
+  private def colors: Seq[Function1[String, String]] = Seq(something, somethingElse, wot, red, blue, green, yellow, blue)
 
-  private def c(color: Int)(s: String) = "%c[1;%sm%s".format(27, color, s)
-
-  val sections = ".-xX*@ ".toList.map(x => red(x.toString))
+  val sections = ".-xX*@ ".toList.zip(colors).map { case (letter, color) => color(letter.toString) }
 
   val rangeMap = Scale.mapRange(min)(max)(0)(sections.size - 1) _
 
