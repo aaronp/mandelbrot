@@ -1,0 +1,32 @@
+I've been wanting to do this for a while...
+
+This is just a playful little console app which renders the Mandelbrot set. I knicked the computation pseudo-code
+from http://en.wikipedia.org/wiki/Mandelbrot_set.
+
+The implementation is in Scala, broken into 3 (main) components which are implemented as actors: 
+
+The controller: holds current state (transation, zooming, etc)
+The renderer: just spits results onto standard out
+The computer: actor which does the computation for a given scale/view
+
+It's built using sbt 0.11 and depends only on scalatest and junit.
+
+I intentionally tried to do the OPPOSITE of TDD and see how freeform programming would be to try again,
+but had to knock up a couple tests when I hit a few areas.
+
+Anyway, to run it, just open an sbt console, then 'run'. ;-)
+
+=== Usage ===
+
+The controller remembers the translation and zoom percentages, so each render takes into account the sum of the commands. For example, the first time the left arrow is pressed, the set is translated 1% on the x axis. 
+The second time the left arrow is pressed, the set it translated 2% on the x axis. If then the plus (+) key is pressed,
+the set is translated 2% on the x axis (as that is the current x-axis translation) and zoomed 1%.
+
+To reset all commands back to zero, use the 'r' key.
+
+the arrow keys (<-, ^, v, ->) to navigate
++/- to zoom
+space to reset back to the initial structure
+w to auto-render
+s to stop auto-rendering
+q to quit (or any unrecognised key)
