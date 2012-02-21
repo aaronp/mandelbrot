@@ -49,7 +49,6 @@ object Scale {
     val offset = diff * 0.5
     val newLeft = coords._1 + offset
     val newRight = newLeft + newRange
-    println("%s : %s @ %s is %s => offset=%s => (%s,%s) ".format(coords, oldRange, percentage, newRange, offset, newLeft, newRight))
     newLeft -> newRight
   }
 }

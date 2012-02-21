@@ -35,8 +35,10 @@ private trait ControllerRenderTrait { this: ControllerTrait =>
 
   override protected def resultToString(results: Seq[Result]): String = {
     val mandelbrotText = CharacterMap.formatResults(results)
-    val textAndFooter = "%s%n%s".format(mandelbrotText, makeFooter)
+    val textAndFooter = "%n%s%n%s%n".format(mandelbrotText, makeFooter)
     textAndFooter
+    //println("%s : %s @ %s is %s => offset=%s => (%s,%s) ".format(coords, oldRange, percentage, newRange, offset, newLeft, newRight))
+    mandelbrotText
   }
 }
 
