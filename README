@@ -34,8 +34,10 @@ The computer: actor which does the computation for a given scale/view
 
 It's built using sbt 0.11 and depends only on scalatest and junit.
 
-I intentionally tried to do the OPPOSITE of TDD and see how freeform programming would be to try again,
-but had to knock up a couple tests when I hit a few areas.
+As this was just for messing around, I initially tried to just freeform program w/ no tests (gasp!) just to
+see what that felt like, but I did have to knock up a couple tests just to feel out a few areas. Anyway, that's
+why you won't find many unit tests, though the code is factored in such a way so as to be easily testable, either from
+automated tests or manually by dropping into the console (via sbt) and calling some of the functions directly.
 
 Anyway, to run it, just open an sbt console, then 'run'. ;-)
 
