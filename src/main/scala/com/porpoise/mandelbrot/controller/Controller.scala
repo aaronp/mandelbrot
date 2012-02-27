@@ -19,11 +19,14 @@ import com.porpoise.mandelbrot.model.ZoomRequest
 import com.porpoise.mandelbrot.Constants._
 import com.porpoise.mandelbrot.render.CharacterMap
 import com.porpoise.mandelbrot.model.StopAutoPlay
+import com.porpoise.mandelbrot.render.Renderer
 
 /**
  * Trait which holds the render logic
  */
 private trait ControllerRenderTrait { this: ControllerTrait =>
+
+  def renderer: Renderer
 
   private def instructions = {
     InputCommand.charCommands.map(command => Character.valueOf(command.id.toChar) + ":" + command).mkString(" | ")
@@ -34,7 +37,7 @@ private trait ControllerRenderTrait { this: ControllerTrait =>
   private def makeStats = "x:%s%% | y:%s%% | zoom:%s%%".format(translateXPercentage, translateYPercentage, zoomPercentage)
 
   override protected def resultToString(results: Seq[Result]): String = {
-    val mandelbrotText = CharacterMap.formatResults(results)
+    val mandelbrotText = renderer.formatResults(results)
     val textAndFooter = "%n%s%n%s%n".format(mandelbrotText, makeFooter)
     textAndFooter
     //println("%s : %s @ %s is %s => offset=%s => (%s,%s) ".format(coords, oldRange, percentage, newRange, offset, newLeft, newRight))
@@ -131,7 +134,7 @@ trait ControllerTrait { this: Actor =>
 
 }
 /** keep access private so it can only be interacted with via messages */
-private class ControllerActor(val mandelbrotActor: Actor, val renderActor: Actor) extends Actor
+private class ControllerActor(val renderer: Renderer, val mandelbrotActor: Actor, val renderActor: Actor) extends Actor
   with ControllerTrait
   with ControllerRenderTrait
   with TimedUpdate
@@ -154,8 +157,8 @@ private class ControllerActor(val mandelbrotActor: Actor, val renderActor: Actor
   }
 }
 object ControllerActor {
-  def apply(mandelbrotActor: Actor, renderActor: Actor): Actor = {
-    val actor = new ControllerActor(mandelbrotActor, renderActor)
+  def apply(mandelbrotActor: Actor, renderer: Renderer, renderActor: Actor): Actor = {
+    val actor = new ControllerActor(renderer, mandelbrotActor, renderActor)
     actor.start
     actor
   }

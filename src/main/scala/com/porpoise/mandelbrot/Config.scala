@@ -1,10 +1,13 @@
 package com.porpoise.mandelbrot
 import java.io.InputStream
+
 import com.porpoise.mandelbrot.controller.ControllerActor
 import com.porpoise.mandelbrot.model.MandelbrotActor
+import com.porpoise.mandelbrot.model.Size
 import com.porpoise.mandelbrot.model.Stop
 import com.porpoise.mandelbrot.render.RenderActor
-import com.porpoise.mandelbrot.model.Size
+import com.porpoise.mandelbrot.render.Renderer
+
 import Constants._
 
 /**
@@ -24,11 +27,13 @@ trait Config {
   val defaultResolution: Size = Size.DefaultSize
   val resolution: Size = Size(80, 20)
 
-  val renderer = RenderActor()
+  def useColor: Boolean = System.getProperty("os.name").contains("Mac") && false
+
+  val renderer: Renderer = if (useColor) Renderer.colored else Renderer.simple
 
   val mandelbrot = MandelbrotActor()
 
-  val controller = ControllerActor(mandelbrot, renderer)
+  val controller = ControllerActor(mandelbrot, renderer, RenderActor(renderer))
 
   private def stop = controller ! Stop()
 }
