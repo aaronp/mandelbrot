@@ -27,7 +27,7 @@ trait Config {
   val defaultResolution: Size = Size.DefaultSize
   val resolution: Size = Size(80, 20)
 
-  def useColor: Boolean = System.getProperty("os.name").contains("Mac") && false
+  def useColor: Boolean = System.getProperty("os.name").contains("Mac")
 
   val renderer: Renderer = if (useColor) Renderer.colored else Renderer.simple
 

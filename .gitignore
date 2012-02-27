@@ -6,3 +6,4 @@ bin
 .cache
 .DS_Store
 
+.lastView

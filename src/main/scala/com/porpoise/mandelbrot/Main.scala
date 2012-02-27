@@ -1,10 +1,20 @@
 package com.porpoise.mandelbrot
-import java.io.InputStream
-
-import scala.Option.option2Iterable
-
-import com.porpoise.mandelbrot.io._
+import scala.annotation.implicitNotFound
+import com.porpoise.mandelbrot.io.InputCommand.Down
+import com.porpoise.mandelbrot.io.InputCommand.GetState
+import com.porpoise.mandelbrot.io.InputCommand.Left
+import com.porpoise.mandelbrot.io.InputCommand.Minus
+import com.porpoise.mandelbrot.io.InputCommand.Plus
+import com.porpoise.mandelbrot.io.InputCommand.Quit
+import com.porpoise.mandelbrot.io.InputCommand.Reset
+import com.porpoise.mandelbrot.io.InputCommand.Right
+import com.porpoise.mandelbrot.io.InputCommand.Space
+import com.porpoise.mandelbrot.io.InputCommand.StartAutoPlay
+import com.porpoise.mandelbrot.io.InputCommand.StopAutoPlay
+import com.porpoise.mandelbrot.io.InputCommand.Up
+import com.porpoise.mandelbrot.io.InputReader
 import com.porpoise.mandelbrot.model.GetStateRequest
+import com.porpoise.mandelbrot.model.GetStateResponse
 import com.porpoise.mandelbrot.model.MandelbrotRequest
 import com.porpoise.mandelbrot.model.SetAbsoluteViewRequest
 import com.porpoise.mandelbrot.model.SetStateRequest
@@ -13,8 +23,12 @@ import com.porpoise.mandelbrot.model.Stop
 import com.porpoise.mandelbrot.model.{ StopAutoPlay => Pause }
 import com.porpoise.mandelbrot.model.TranslateXRequest
 import com.porpoise.mandelbrot.model.TranslateYRequest
-import com.porpoise.mandelbrot.model.UpdateRequest
 import com.porpoise.mandelbrot.model.ZoomRequest
+import com.porpoise.mandelbrot.io.InputCommand
+import scala.actors.Actor
+import com.porpoise.mandelbrot.model.ScaledView
+import com.porpoise.mandelbrot.model.ScaledCoords
+import com.porpoise.mandelbrot.io.Files
 
 object Main {
   import InputCommand._
@@ -50,6 +64,13 @@ object Main {
   }
 
   def main(args: Array[String]) = {
+
+    def onShutdown(controller: Actor): ScaledView = {
+      val resultFuture = controller !! GetStateRequest()
+      val GetStateResponse(scaledView, resolution, _, _, _) = resultFuture()
+      scaledView
+    }
+
     Config.withConfig(System.in) { config =>
       import config._
 
@@ -57,9 +78,20 @@ object Main {
       controller ! SetAbsoluteViewRequest(size = resolution)
 
       readLoop(config) { msg =>
+
+        val shouldContinue = msg != Stop()
+
+        if (!shouldContinue) {
+          val ScaledView(ScaledCoords(x1, y1), ScaledCoords(x2, y2)) = onShutdown(controller)
+
+          Files.writeToFile(new java.io.File(".lastView"), "the last view was @ (%s, %s) X (%s, %s)".format(x1, y1, x2, y2))
+        }
+
         controller ! msg
-        msg != Stop()
+
+        shouldContinue
       }
+
     }
 
     println("Done")

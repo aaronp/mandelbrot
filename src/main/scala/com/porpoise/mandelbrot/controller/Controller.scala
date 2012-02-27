@@ -115,7 +115,10 @@ trait ControllerTrait { this: Actor =>
 
     case UpdateRequest() => onUpdateView
 
-    case GetStateRequest() => reply(GetStateResponse(currentScaledView, currentSize, translateXPercentage, translateYPercentage, zoomPercentage))
+    case gsr: GetStateRequest => {
+      val response = GetStateResponse(currentScaledView, currentSize, translateXPercentage, translateYPercentage, zoomPercentage)
+      reply(response)
+    }
 
     case SetStateRequest(xPercent, yPercent, zoom) => {
       translateXPercentage = xPercent
