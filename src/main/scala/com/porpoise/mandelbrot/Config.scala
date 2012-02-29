@@ -25,7 +25,7 @@ trait Config {
   val adjustment: Percentage = 1
   val refreshRateInMillis = 100
   val defaultResolution: Size = Size.DefaultSize
-  val resolution: Size = Size(80, 20)
+  val resolution: Size = Size(160, 50)
 
   def useColor: Boolean = System.getProperty("os.name").contains("Mac")
 
